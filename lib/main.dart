@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildRecipePageList(Recipe recipe) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         child: ListTile(
           title: Text(recipe.title),
           onTap: () async {
