@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import './test_data/recipes.dart';
+import "../modules/recipe.dart";
+import 'test_data/test_recipes.dart';
+import "../pages/RecipeDetail.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 
@@ -27,8 +32,8 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
-      themeMode: _themeMode, // 2) ← ← ← use "state" field here //////////////
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      themeMode: _themeMode,
+      home: const MyHomePage(title: 'The Fridge'),
     );
   }
 
@@ -51,45 +56,67 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isDark = false;
   final List<Recipe> _recipes = recipes;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.title),
       ),
       body: Center(
-        child: ListView(
-            children:
-                _recipes.map((e) => Center(child: Text(e.title))).toList()),
+        //data display section
+        child: ListView(children: _recipes.map(_buildRecipePageList).toList()),
       ),
+      //
       drawer: Drawer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          //this is the toggle light dark theme and set on the bottom part of the page.
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Choose your theme:',
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 /// //////////////////////////////////////////////////////
-                /// Change theme & rebuild to show it using these buttons
-                ElevatedButton(
-                    onPressed: () =>
-                        MyApp.of(context)?.changeTheme(ThemeMode.light),
-                    child: const Text('Light')),
-                ElevatedButton(
-                    onPressed: () =>
-                        MyApp.of(context)?.changeTheme(ThemeMode.dark),
-                    child: const Text('Dark')),
-
-                /// //////////////////////////////////////////////////////
+                /// Change theme & rebuild via this switch\
+                /// will not require authentication to do this but this Drawer will have authentication area within it
+                ///
+                const Text(
+                  'Light/Dark Mode:',
+                ),
+                Switch(
+                    value: isDark,
+                    onChanged: (value) {
+                      setState(() {
+                        isDark = value;
+                        if (isDark == false) {
+                          MyApp.of(context)?.changeTheme(ThemeMode.light);
+                        } else {
+                          MyApp.of(context)?.changeTheme(ThemeMode.dark);
+                        }
+                      });
+                    }),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildRecipePageList(Recipe recipe) {
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListTile(
+          title: Text(recipe.title),
+          onTap: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecipeDetail(recipe: recipe)));
+          },
+        ));
   }
 }
