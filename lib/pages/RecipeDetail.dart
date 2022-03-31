@@ -47,12 +47,13 @@ class RecipeDetail extends StatelessWidget {
         StaggeredGridTile.fit(
             crossAxisCellCount: 5,
             child: Card(
-              child: ListView.builder(
+              child: Flexible(
+                  child: ListView.builder(
                 itemCount: _recipe.ingredients.length,
                 itemBuilder: (context, index) {
                   return Text(_recipe.ingredients[index]);
                 },
-              ),
+              )),
             )),
       ],
     );
