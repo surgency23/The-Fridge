@@ -1,6 +1,7 @@
 import "../modules/recipe.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import "dart:math";
 
 class RecipeDetail extends StatelessWidget {
   const RecipeDetail({Key? key, required this.recipe}) : super(key: key);
@@ -11,51 +12,48 @@ class RecipeDetail extends StatelessWidget {
         appBar: AppBar(title: Text(recipe.title)),
         body: SafeArea(
             child: Card(
-          color: Colors.blue,
-          child: test(recipe),
+          color: Color.fromARGB(255, 34, 76, 108),
+          child: ListView(children: [staggeredGrid(recipe)]),
         )));
   }
 
-  Widget test(_recipe) {
+  Widget staggeredGrid(_recipe) {
     return StaggeredGrid.count(
-      crossAxisCount: 4,
-      mainAxisSpacing: 4,
-      crossAxisSpacing: 4,
+      crossAxisCount: 6,
+      mainAxisSpacing: 0,
+      crossAxisSpacing: 0,
       children: [
         StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
+          mainAxisCellCount: 4,
+          crossAxisCellCount: 3,
           child: Card(
-              color: Color.fromARGB(255, 31, 9, 82),
-              child: Text("Cook Time: ${_recipe.cooktime.toString()}")),
+              child: Image.network(
+                  'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
+                  fit: BoxFit.contain)),
         ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
-          child: Card(
-              color: Colors.yellow,
-              child: Text("Cook Time: ${_recipe.cooktime.toString()}")),
-        ),
-        StaggeredGridTile.count(
-            crossAxisCellCount: 2,
-            mainAxisCellCount: 2,
-            child: Card(
-                color: Colors.pink,
-                child: Text("Cook Time: ${_recipe.cooktime.toString()}"))),
-        StaggeredGridTile.count(
+        StaggeredGridTile.fit(
           crossAxisCellCount: 2,
-          mainAxisCellCount: 1,
           child: Card(
-              color: Color.fromARGB(255, 85, 79, 81),
-              child: Text("Cook Time: ${_recipe.cooktime.toString()}")),
+              child: Text(
+                  "hgjefnsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbk")),
         ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 4,
-          mainAxisCellCount: 2,
-          child: Card(
-              color: Color.fromARGB(255, 43, 155, 61),
-              child: Text("Cook Time: ${_recipe.cooktime.toString()}")),
-        ),
+        StaggeredGridTile.fit(
+            crossAxisCellCount: 1,
+            child: Card(
+                child: Text(
+                    "hgjefnsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbk"))),
+
+        ///need to figire out this shit next
+        StaggeredGridTile.fit(
+            crossAxisCellCount: 5,
+            child: Card(
+              child: ListView.builder(
+                itemCount: _recipe.ingredients.length,
+                itemBuilder: (context, index) {
+                  return Text(_recipe.ingredients[index]);
+                },
+              ),
+            )),
       ],
     );
   }
@@ -120,14 +118,13 @@ Widget _buildIngredient(String ingredient) {
       ));
 }
 
-
 //MUST BUILD AREA FOR INGREDIENTS AND PROCESS
 //        ListView.builder(
-        //   itemCount: _recipe.ingredients.length,
-        //   itemBuilder: (context, index) {
-        //     return ListTile(
-        //       title: Text(_recipe.ingredients[index]),
-        //     );
-        //   },
-        // ),
-        // Card()
+//   itemCount: _recipe.ingredients.length,
+//   itemBuilder: (context, index) {
+//     return ListTile(
+//       title: Text(_recipe.ingredients[index]),
+//     );
+//   },
+// ),
+// Card()
