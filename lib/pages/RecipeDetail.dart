@@ -1,7 +1,6 @@
 import "../modules/recipe.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import "dart:math";
 
 class RecipeDetail extends StatelessWidget {
   const RecipeDetail({Key? key, required this.recipe}) : super(key: key);
@@ -9,123 +8,150 @@ class RecipeDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(recipe.title)),
-        body: SafeArea(
-            child: Card(
-          color: Color.fromARGB(255, 34, 76, 108),
-          child: ListView(children: [staggeredGrid(recipe)]),
-        )));
-  }
-
-  Widget staggeredGrid(_recipe) {
-    return StaggeredGrid.count(
-      crossAxisCount: 6,
-      mainAxisSpacing: 0,
-      crossAxisSpacing: 0,
+        body: Stack(
       children: [
-        StaggeredGridTile.count(
-          mainAxisCellCount: 4,
-          crossAxisCellCount: 3,
-          child: Card(
-              child: Image.network(
-                  'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-                  fit: BoxFit.contain)),
+        //background image
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(.25), BlendMode.darken),
+                    image: const NetworkImage(
+                        "https://512pixels.net/downloads/macos-wallpapers-6k/10-11-6k.jpg"))),
+          ),
         ),
-        StaggeredGridTile.fit(
-          crossAxisCellCount: 2,
-          child: Card(
-              child: Text(
-                  "hgjefnsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbk")),
+        //close button
+        Positioned(
+          top: 15,
+          right: 15,
+          child: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
         ),
-        StaggeredGridTile.fit(
-            crossAxisCellCount: 1,
-            child: Card(
-                child: Text(
-                    "hgjefnsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbknsfmlvdjknsuhbdjshgjefkdaslsfhbk"))),
-
-        ///need to figire out this shit next
-        StaggeredGridTile.fit(
-            crossAxisCellCount: 5,
-            child: Card(
-              child: Flexible(
-                  child: ListView.builder(
-                itemCount: _recipe.ingredients.length,
-                itemBuilder: (context, index) {
-                  return Text(_recipe.ingredients[index]);
-                },
-              )),
-            )),
+        //where the actual information lives
+        Positioned(
+            left: 10,
+            right: 10,
+            bottom: 10,
+            child: Container(
+                height: MediaQuery.of(context).size.height / 1.25,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: .15),
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white.withOpacity(.275)),
+                child: SingleChildScrollView(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          //border: Border.all(color: Colors.red, width: 2)
+                          ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 10, right: 5, left: 5),
+                        child: Text(recipe.title,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            )),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                          //border: Border.all(color: Colors.red, width: 2)
+                          ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          SizedBox(width: 7),
+                          Text("RATINGS PLACEHOLDER"),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red, width: 2)),
+                      child: GridView.count(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 1,
+                          shrinkWrap: true,
+                          childAspectRatio: 12,
+                          children: List.generate(recipe.ingredients.length,
+                              (ingredient) {
+                            return Row(children: [
+                              Expanded(
+                                child: Text(recipe.ingredients[ingredient],
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.fill
+                                        ..color = Colors.white,
+                                    )),
+                              )
+                            ]);
+                          })),
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            //border: Border.all(color: Colors.red, width: 2)
+                            ),
+                        child: const Padding(
+                            padding:
+                                EdgeInsets.only(top: 5, bottom: 5, left: 15),
+                            child: Text("Instructions:",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16)))),
+                    Container(
+                        decoration: BoxDecoration(
+                            //border: Border.all(color: Colors.red, width: 2)
+                            ),
+                        child: Padding(
+                            padding: EdgeInsets.only(left: 30, right: 30),
+                            child: Text(recipe.instructions,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.fill
+                                    ..color = Colors.white,
+                                ))))
+                  ],
+                ))))
       ],
-    );
-  }
-
-  Widget gridRecipeInfo(double numberPadding, _recipe, double gridPadding) {
-    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Flexible(
-          child: GridView(
-        padding: EdgeInsets.all(gridPadding),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: gridPadding,
-          crossAxisSpacing: gridPadding,
-        ),
-        children: [
-          Card(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                  padding: EdgeInsets.all(numberPadding),
-                  child: Text("Cook Time: ${_recipe.cooktime.toString()}")),
-              Padding(
-                  padding: EdgeInsets.all(numberPadding),
-                  child: Text("Prep Time: ${_recipe.preptime.toString()}")),
-              Padding(
-                  padding: EdgeInsets.all(numberPadding),
-                  child: Text("Wait Time: ${_recipe.waittime.toString()}")),
-              Padding(
-                  padding: EdgeInsets.all(numberPadding),
-                  child: Text("Servings: ${_recipe.servings.toString()}")),
-            ],
-          )),
-          Card(
-              child: Padding(
-            child: Image.network(
-                'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-                fit: BoxFit.contain),
-            padding: EdgeInsets.all(numberPadding),
-          )),
-        ],
-      )),
-      Flexible(
-          child: Card(
-        child: ListView.builder(
-          itemCount: _recipe.ingredients.length,
-          itemBuilder: (context, index) {
-            return Text(_recipe.ingredients[index]);
-          },
-        ),
-      ))
-    ]);
+    ));
   }
 }
-
-Widget _buildIngredient(String ingredient) {
-  return Padding(
-      padding: const EdgeInsets.all(5),
-      child: ListTile(
-        title: Text(ingredient),
-      ));
-}
-
-//MUST BUILD AREA FOR INGREDIENTS AND PROCESS
-//        ListView.builder(
-//   itemCount: _recipe.ingredients.length,
-//   itemBuilder: (context, index) {
-//     return ListTile(
-//       title: Text(_recipe.ingredients[index]),
-//     );
-//   },
-// ),
-// Card()
+                        // children: List.generate(
+                        //   recipe.ingredients.length,
+                        //   (f) {
+                        //     return Row(
+                        //       children: <Widget>[
+                        //         Flexible(
+                        //             child: Text(
+                        //           "${recipe.ingredients[f]}",
+                        //           style: TextStyle(
+                        //             color: Colors.white,
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 15,
+                        //           ),
+                        //         )),
+                        //       ],
+                        //     );
+                        //   },
+                        // ),
