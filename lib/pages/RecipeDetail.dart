@@ -1,3 +1,5 @@
+import 'package:the_fridge/widgets/IngredientsView.dart';
+
 import "../modules/recipe.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -38,7 +40,7 @@ class RecipeDetail extends StatelessWidget {
             right: 10,
             bottom: 10,
             child: Container(
-                height: MediaQuery.of(context).size.height / 1.25,
+                height: MediaQuery.of(context).size.height / 1.15,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: .15),
                     borderRadius: BorderRadius.circular(15.0),
@@ -82,29 +84,17 @@ class RecipeDetail extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.red, width: 2)),
-                      child: GridView.count(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 1,
-                          shrinkWrap: true,
-                          childAspectRatio: 12,
-                          children: List.generate(recipe.ingredients.length,
-                              (ingredient) {
-                            return Row(children: [
-                              Expanded(
-                                child: Text(recipe.ingredients[ingredient],
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      foreground: Paint()
-                                        ..style = PaintingStyle.fill
-                                        ..color = Colors.white,
-                                    )),
-                              )
-                            ]);
-                          })),
-                    ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 2)),
+                        child: IngredientsView(recipe.ingredients)
+                        // GridView.count(
+                        //     crossAxisCount: 2,
+                        //     mainAxisSpacing: 3,
+                        //     crossAxisSpacing: 1,
+                        //     shrinkWrap: true,
+                        //     childAspectRatio: 12,
+                        //     children: IngredientsView(recipe.ingredients)),
+                        ),
                     Container(
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
@@ -137,21 +127,3 @@ class RecipeDetail extends StatelessWidget {
     ));
   }
 }
-                        // children: List.generate(
-                        //   recipe.ingredients.length,
-                        //   (f) {
-                        //     return Row(
-                        //       children: <Widget>[
-                        //         Flexible(
-                        //             child: Text(
-                        //           "${recipe.ingredients[f]}",
-                        //           style: TextStyle(
-                        //             color: Colors.white,
-                        //             fontWeight: FontWeight.bold,
-                        //             fontSize: 15,
-                        //           ),
-                        //         )),
-                        //       ],
-                        //     );
-                        //   },
-                        // ),

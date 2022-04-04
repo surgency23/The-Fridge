@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import "../modules/recipe.dart";
 import 'test_data/test_recipes.dart';
 import "../pages/RecipeDetail.dart";
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
