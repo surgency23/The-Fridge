@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:expand_widget/expand_widget.dart';
 
@@ -23,31 +25,40 @@ class IngredientsView extends StatelessWidget {
     return returnList;
   }
 
-  Widget ingredientTextBoxes(numberOfBoxes) {
-    throw ("stop");
+  List<Widget> ingredientColumnTextBoxes(numberOfBoxes) {
+    List<List<String>> formattedIngredients =
+        ingredientSplitter(ingredients, numberOfBoxes);
+
+    List<Widget> returnWidgets = [];
+    for (int index = 0; index < formattedIngredients.length; index++) {
+      returnWidgets.add(Expanded(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            formattedIngredients[index].map(buildIngredientTextBox).toList(),
+      )));
+    }
+    return returnWidgets;
+  }
+
+  Widget buildIngredientTextBox(temp) {
+    return Padding(
+        padding: EdgeInsets.only(bottom: 2, left: 1, right: 3),
+        child: Text("> $temp"));
   }
 
   @override
   Widget build(BuildContext context) {
     final String formattedIngredients;
-    return ExpandChild(
-      child: Row(children: []),
-    );
-    // ExpandChild()
+    return Column(children: [
+      Text(
+        "Ingredients:",
+        style: Theme.of(context).textTheme.headline5,
+      ),
+      ExpandChild(
+          collapsedHint: "Ingredients",
+          expandedHint: "temp",
+          child: Row(children: ingredientColumnTextBoxes(2)))
+    ]);
   }
 }
-
-
-// ListView.builder(
-//                 itemCount: ingredients.length,
-//                 //scrollDirection: Axis.horizontal,
-//                 itemBuilder: (context, index) => Container(
-//                     //margin: EdgeInsets.all(1),
-//                     child: Card(
-//                         child: Padding(
-//                             padding: EdgeInsets.all(3),
-//                             child: Center(
-//                               child: Text(
-//                                 ingredients[index],
-//                               ),
-//                             )))))
