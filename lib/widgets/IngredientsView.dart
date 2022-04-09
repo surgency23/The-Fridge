@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:expand_widget/expand_widget.dart';
 
 class IngredientsView extends StatelessWidget {
   final List<String> ingredients;
-  IngredientsView(this.ingredients);
+  const IngredientsView(this.ingredients);
   List<List<String>> ingredientSplitter(arr, numberOfArrs) {
     List<int> sumOfArrs = List<int>.filled(numberOfArrs, 0);
     List<List<String>> returnList = List.generate(numberOfArrs, (i) => []);
@@ -43,22 +40,43 @@ class IngredientsView extends StatelessWidget {
 
   Widget buildIngredientTextBox(temp) {
     return Padding(
-        padding: EdgeInsets.only(bottom: 2, left: 1, right: 3),
-        child: Text("> $temp"));
+        padding: EdgeInsets.only(bottom: 0, left: 2, right: 2, top: 1),
+        child: Text("> $temp",
+            style: TextStyle(
+              fontSize: 15,
+              foreground: Paint()
+                ..style = PaintingStyle.fill
+                ..color = Colors.white,
+            )));
   }
 
   @override
   Widget build(BuildContext context) {
     final String formattedIngredients;
-    return Column(children: [
-      Text(
-        "Ingredients:",
-        style: Theme.of(context).textTheme.headline5,
-      ),
-      ExpandChild(
-          collapsedHint: "Ingredients",
-          expandedHint: "temp",
-          child: Row(children: ingredientColumnTextBoxes(2)))
-    ]);
+    return Padding(
+        padding: EdgeInsets.only(top: 5, bottom: 5, left: 15),
+        child: Column(children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Ingredients:",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+
+          Row(children: ingredientColumnTextBoxes(2)),
+          // ExpandChild(
+          //     collapsedHint: "PLEASE WORK",
+          //     expandedHint: "temp",
+          //     icon: Icons.cookie_sharp,
+          //     child: Row(children: ingredientColumnTextBoxes(2)))
+        ]));
   }
 }
+// Padding(
+//                                 padding: EdgeInsets.only(
+//                                     top: 5, bottom: 5, left: 15),
+//                                 child: ),
