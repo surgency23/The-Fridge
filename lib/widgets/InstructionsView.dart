@@ -6,7 +6,7 @@ class InstructionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
- cd th     children: [
+      children: [
         Container(
           alignment: Alignment.centerLeft,
           child: const Padding(
