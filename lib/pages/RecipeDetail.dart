@@ -28,17 +28,6 @@ class RecipeDetail extends StatelessWidget {
                             "https://512pixels.net/downloads/macos-wallpapers-6k/10-11-6k.jpg"))),
               ),
             ),
-            // //close button
-            // Positioned(
-            //   top: 50,
-            //   right: 5,
-            //   child: IconButton(
-            //       icon: const Icon(Icons.close),
-            //       onPressed: () {
-            //         Navigator.pop(context);
-            //       }),
-            // ),
-            //where the actual information lives
             Positioned(
                 top: 10,
                 left: 10,
