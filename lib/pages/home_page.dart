@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:the_fridge/pages/login_page.dart';
 import "../classes/recipe.dart";
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import "recipe_detail.dart";
@@ -23,8 +24,7 @@ List<Recipe> parseRecipes(String responseBody) {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -40,12 +40,13 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.title),
+        title: Text('The Fridge'),
       ),
       body: FutureBuilder<List<Recipe>>(
         future: fetchRecipes(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            // print(snapshot);
             return const Center(
               child: Text("An Error Occured loading data!"),
             );
@@ -60,6 +61,19 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
+      drawer: Drawer(
+          child: Column(
+        children: [
+          ElevatedButton(
+              child: const Text("login"),
+              onPressed: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+              })
+        ],
+      )),
       floatingActionButton: IconButton(
           icon: isDark == true
               ? const Icon(Icons.sunny)
@@ -77,20 +91,6 @@ class _HomePageState extends State<HomePage> {
           }),
     ));
   }
-
-  // Widget _buildRecipePageList(Recipe recipe) {
-  //   return Padding(
-  //       padding: const EdgeInsets.all(5),
-  //       child: ListTile(
-  //         title: Text(recipe.title),
-  //         onTap: () async {
-  //           Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                   builder: (context) => RecipeDetail(recipe: recipe)));
-  //         },
-  //       ));
-  //}
 }
 
 class RecipeList extends StatelessWidget {
@@ -99,41 +99,22 @@ class RecipeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int swapindex = 0;
-    NetworkImage defineSize(int index) {
-      if (index == 0) {
-        swapindex += 7;
-        return NetworkImage(recipes[index].image!.size320W!);
-      } else if (index % 10 == 0) {
-        swapindex += 7;
-        return NetworkImage(recipes[index].image!.size320W!);
-      } else if ((index - 7) % 10 == 0) {
-        swapindex += 3;
-        return NetworkImage(recipes[index].image!.size320W!);
-      } else {
-        return NetworkImage(recipes[index].image!.size120W!);
-      }
-    }
-
-    return Container(
-        //margin: EdgeInsets.all(12),
-        child: GridView.custom(
+    return GridView.custom(
       gridDelegate: SliverQuiltedGridDelegate(
         crossAxisCount: 4,
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
         repeatPattern: QuiltedGridRepeatPattern.inverted,
         pattern: [
-          QuiltedGridTile(2, 2),
-          QuiltedGridTile(1, 1),
-          QuiltedGridTile(1, 1),
-          QuiltedGridTile(1, 1),
-          QuiltedGridTile(1, 1),
+          const QuiltedGridTile(2, 2),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
         ],
       ),
-      semanticChildCount: recipes.length,
-      childrenDelegate:
-          SliverChildBuilderDelegate((context, index) => GestureDetector(
+      childrenDelegate: SliverChildBuilderDelegate(
+          (context, index) => GestureDetector(
                 onTap: () async {
                   Navigator.push(
                       context,
@@ -144,9 +125,11 @@ class RecipeList extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          fit: BoxFit.cover, image: defineSize(index))),
+                          fit: BoxFit.cover,
+                          image: NetworkImage(recipes[index].image.size640W))),
                 ),
-              )),
-    ));
+              ),
+          childCount: recipes.length),
+    );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class InstructionsView extends StatelessWidget {
   final String instructions;
-  InstructionsView(this.instructions);
+  const InstructionsView(this.instructions);
   @override
   Widget build(BuildContext context) {
     return Column(

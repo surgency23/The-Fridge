@@ -8,10 +8,11 @@ import '../widgets/instructions_view.dart';
 class RecipeDetail extends StatelessWidget {
   const RecipeDetail({Key? key, required this.recipe}) : super(key: key);
   final Recipe recipe;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(recipe.title!)),
+        appBar: AppBar(title: Text(recipe.title)),
         body: Stack(
           children: [
             //background image
@@ -22,7 +23,7 @@ class RecipeDetail extends StatelessWidget {
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(.50), BlendMode.darken),
-                        image: NetworkImage(recipe.image!.size1280W!))),
+                        image: NetworkImage(recipe.image.size1280W))),
               ),
             ),
             //where the actual information lives
@@ -44,12 +45,18 @@ class RecipeDetail extends StatelessWidget {
                         Container(
                             padding: const EdgeInsets.only(top: 5, bottom: 5),
                             child: const RatingsView()),
+                        recipe.servings != null
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.only(top: 5, bottom: 5),
+                                child: Text(recipe.servings!))
+                            : Container(),
                         Container(
                             alignment: Alignment.centerLeft,
-                            child: IngredientsView(recipe.ingredients!)),
+                            child: IngredientsView(recipe.ingredients)),
                         Container(
                             alignment: Alignment.centerLeft,
-                            child: InstructionsView(recipe.instructions!)),
+                            child: InstructionsView(recipe.instructions)),
                       ],
                     )))))
           ],

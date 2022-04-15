@@ -1,29 +1,29 @@
 class Recipe {
-  final List<String>? tags;
+  final List<String> tags;
   final String? servings;
-  final String? recipeSource;
+  final String recipeSource;
   final String? imageSource;
-  final RecipeImage? image;
-  final String? instructions;
-  final List<String>? ingredients;
-  final String? title;
-  final String? id;
+  final RecipeImage image;
+  final String instructions;
+  final List<String> ingredients;
+  final String title;
+  final String id;
   final List<ParsedIngredients>? parsedIngredients;
 
   const Recipe(
-      {this.tags,
-      this.servings,
-      this.recipeSource,
-      this.imageSource,
-      this.image,
-      this.instructions,
-      this.ingredients,
-      this.title,
-      this.id,
+      {required this.tags,
+      required this.servings,
+      required this.recipeSource,
+      required this.imageSource,
+      required this.image,
+      required this.instructions,
+      required this.ingredients,
+      required this.title,
+      required this.id,
       this.parsedIngredients});
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
-    var temp = null;
+    var temp;
     if (json["parsedIngredients"] is List) {
       temp = json["parsedIngredients"] == null
           ? null
@@ -31,16 +31,82 @@ class Recipe {
               .map((e) => ParsedIngredients.fromJson(e))
               .toList();
     }
+    List<String> tags;
+    String recipeSource;
+    String? servings;
+    String? imageSource;
+    RecipeImage image;
+    String instructions;
+    List<String> ingredients;
+    String title;
+    String id = json["id"];
+    try {
+      tags = List<String>.from(json["tags"]);
+    } catch (e) {
+      print("tags");
+      rethrow;
+    }
+
+    try {
+      servings = json["servings"];
+    } catch (e) {
+      print("servings");
+      rethrow;
+    }
+
+    try {
+      recipeSource = json["recipeSource"];
+    } catch (e) {
+      print("recipeSource");
+      rethrow;
+    }
+    try {
+      imageSource = json["imageSource"];
+    } catch (e) {
+      print("imageSource");
+      rethrow;
+    }
+    try {
+      image = RecipeImage.fromJson(json["image"]);
+    } catch (e) {
+      print("image");
+      rethrow;
+    }
+    try {
+      instructions = json["instructions"];
+    } catch (e) {
+      print("instructions");
+      rethrow;
+    }
+    try {
+      ingredients = List<String>.from(json["ingredients"]);
+    } catch (e) {
+      print("ingredients");
+      rethrow;
+    }
+    try {
+      title = json["title"];
+    } catch (e) {
+      print("title");
+      rethrow;
+    }
+    try {
+      id = json["id"];
+    } catch (e) {
+      print("id");
+      rethrow;
+    }
+
     return Recipe(
-        tags: List<String>.from(json["tags"]),
-        servings: json["servings"],
-        recipeSource: json["recipeSource"],
-        imageSource: json["imageSource"],
-        image: RecipeImage.fromJson(json["image"]),
-        instructions: json["instructions"],
-        ingredients: List<String>.from(json["ingredients"]),
-        title: json["title"],
-        id: json["id"],
+        tags: tags,
+        servings: servings,
+        recipeSource: recipeSource,
+        imageSource: imageSource,
+        image: image,
+        instructions: instructions,
+        ingredients: ingredients,
+        title: title,
+        id: id,
         parsedIngredients: temp);
   }
 
@@ -50,7 +116,7 @@ class Recipe {
     data["servings"] = servings;
     data["recipeSource"] = recipeSource;
     data["imageSource"] = imageSource;
-    data["image"] = image!.toJson();
+    data["image"] = image.toJson();
     data["instructions"] = instructions;
     data["ingredients"] = ingredients;
     data["title"] = title;
@@ -64,13 +130,13 @@ class Recipe {
 }
 
 class ParsedIngredients {
-  late double? confidence;
-  late String? product;
-  late dynamic productSizeModifier;
-  late dynamic quantity;
-  late dynamic unit;
-  late dynamic preparationNotes;
-  late dynamic usdaInfo;
+  double? confidence;
+  String? product;
+  dynamic productSizeModifier;
+  dynamic quantity;
+  dynamic unit;
+  dynamic preparationNotes;
+  dynamic usdaInfo;
 
   ParsedIngredients(this.confidence, this.product, this.productSizeModifier,
       this.quantity, this.unit, this.preparationNotes, this.usdaInfo);
@@ -103,12 +169,12 @@ class ParsedIngredients {
 }
 
 class RecipeImage {
-  late String? size120W;
+  late String size120W;
   late String? size240W;
   late String? size320W;
-  late String? size640W;
+  late String size640W;
   late String? size960W;
-  late String? size1280W;
+  late String size1280W;
   late String? size1600W;
   late String? size1920W;
   late String? size2240W;

@@ -22,7 +22,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   /// 1) our themeMode "state" field
   ThemeMode _themeMode = ThemeMode.system;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      home: const HomePage(title: 'The Fridge'),
+      home: const HomePage(),
     );
   }
 

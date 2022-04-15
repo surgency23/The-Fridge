@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class IngredientsView extends StatelessWidget {
   final List<String> ingredients;
-  IngredientsView(this.ingredients);
+  const IngredientsView(this.ingredients);
   List<List<String>> ingredientSplitter(arr, numberOfArrs) {
     List<int> sumOfArrs = List<int>.filled(numberOfArrs, 0);
     List<List<String>> returnList = List.generate(numberOfArrs, (i) => []);
@@ -40,7 +40,7 @@ class IngredientsView extends StatelessWidget {
 
   Widget buildIngredientTextBox(temp) {
     return Padding(
-        padding: EdgeInsets.only(bottom: 0, left: 2, right: 2, top: 1),
+        padding: const EdgeInsets.only(bottom: 0, left: 2, right: 2, top: 1),
         child: Text("> $temp",
             style: TextStyle(
               fontSize: 15,
@@ -52,13 +52,12 @@ class IngredientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String formattedIngredients;
     return Padding(
-        padding: EdgeInsets.only(top: 5, bottom: 5, left: 15),
+        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15),
         child: Column(children: [
           Container(
             alignment: Alignment.centerLeft,
-            child: Text(
+            child: const Text(
               "Ingredients:",
               style: TextStyle(
                   color: Colors.white,
