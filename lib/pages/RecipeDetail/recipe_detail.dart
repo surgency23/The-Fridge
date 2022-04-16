@@ -1,9 +1,9 @@
 import 'package:the_fridge/widgets/ingredients_view.dart';
 import 'package:the_fridge/widgets/ratings_view.dart';
 
-import "../classes/recipe.dart";
+import '../../classes/recipe.dart';
 import 'package:flutter/material.dart';
-import '../widgets/instructions_view.dart';
+import '../../widgets/instructions_view.dart';
 
 class RecipeDetail extends StatelessWidget {
   const RecipeDetail({Key? key, required this.recipe}) : super(key: key);

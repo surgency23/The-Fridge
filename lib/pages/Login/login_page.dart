@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:the_fridge/pages/home_page.dart';
-import 'package:the_fridge/pages/signup.dart';
+import 'package:the_fridge/pages/Home/home_page.dart';
+import 'package:the_fridge/pages/Signup/signup.dart';
 import 'package:the_fridge/services/authservice.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -51,12 +51,7 @@ class LoginScreenState extends State<LoginScreen> {
                 }
               });
             }),
-        ElevatedButton(
-            child: Text("Dont have an account?"),
-            onPressed: () async {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SignUpPage()));
-            }),
+        ElevatedButton(child: Text("Dont have an account?"), onPressed: () {}),
         ElevatedButton(
             child: Text("getinfo"),
             onPressed: () {

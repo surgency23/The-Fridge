@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:the_fridge/pages/login_page.dart';
-import "../classes/recipe.dart";
+import 'package:the_fridge/pages/Login/login_page.dart';
+import '../../classes/recipe.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import "recipe_detail.dart";
-import "../main.dart";
+import '../RecipeDetail/recipe_detail.dart';
+import '../../main.dart';
 
 Future<List<Recipe>> fetchRecipes() async {
   final response =
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('The Fridge'),
+        title: const Text('The Fridge'),
       ),
       body: FutureBuilder<List<Recipe>>(
         future: fetchRecipes(),
