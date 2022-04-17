@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:the_fridge/pages/Login/login_page.dart';
 import '../../classes/recipe.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../RecipeDetail/recipe_detail.dart';
-import '../../main.dart';
 
 Future<List<Recipe>> fetchRecipes() async {
   final response =
@@ -38,10 +38,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('The Fridge'),
-      ),
       body: FutureBuilder<List<Recipe>>(
         future: fetchRecipes(),
         builder: (context, snapshot) {
@@ -61,34 +57,18 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      drawer: Drawer(
-          child: Column(
-        children: [
-          ElevatedButton(
-              child: const Text("login"),
-              onPressed: () async {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
-              })
+      bottomNavigationBar: CurvedNavigationBar(
+        animationDuration: Duration(milliseconds: 700),
+        backgroundColor: Colors.blue,
+        height: 45.5,
+        items: const <Widget>[
+          Icon(Icons.home, size: 18.5),
+          Icon(Icons.account_circle_rounded, size: 18.5),
         ],
-      )),
-      floatingActionButton: IconButton(
-          icon: isDark == true
-              ? const Icon(Icons.sunny)
-              : const Icon(Icons.mode_night_outlined),
-          onPressed: () {
-            setState(() {
-              // Here we changing the icon.
-              isDark = !isDark;
-              if (isDark == false) {
-                MyApp.of(context)?.changeTheme(ThemeMode.light);
-              } else {
-                MyApp.of(context)?.changeTheme(ThemeMode.dark);
-              }
-            });
-          }),
+        onTap: (index) {
+          //Handle button tap
+        },
+      ),
     ));
   }
 }
@@ -99,37 +79,115 @@ class RecipeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.custom(
-      gridDelegate: SliverQuiltedGridDelegate(
-        crossAxisCount: 4,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
-        repeatPattern: QuiltedGridRepeatPattern.inverted,
-        pattern: [
-          const QuiltedGridTile(2, 2),
-          const QuiltedGridTile(1, 1),
-          const QuiltedGridTile(1, 1),
-          const QuiltedGridTile(1, 1),
-          const QuiltedGridTile(1, 1),
-        ],
+    return CustomScrollView(slivers: [
+      SliverAppBar(
+        // Provide a standard title.
+        title: Text("The Fridge"),
+        centerTitle: false,
+        // Allows the user to reveal the app bar if they begin scrolling
+        // back up the list of items.
+        floating: true,
+        forceElevated: true,
+        elevation: 10,
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.sunny))],
+        // Display a placeholder widget to visualize the shrinking size.
+        //flexibleSpace: Placeholder(),
+        // Make the initial height of the SliverAppBar larger than normal.
+        //expandedHeight: 50,
       ),
-      childrenDelegate: SliverChildBuilderDelegate(
-          (context, index) => GestureDetector(
-                onTap: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RecipeDetail(recipe: recipes[index])));
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(recipes[index].image.size640W))),
+      SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+            (context, index) => GestureDetector(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RecipeDetail(recipe: recipes[index])));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                NetworkImage(recipes[index].image.size640W))),
+                  ),
                 ),
+            childCount: recipes.length),
+        gridDelegate: SliverQuiltedGridDelegate(
+          crossAxisCount: 4,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          repeatPattern: QuiltedGridRepeatPattern.inverted,
+          pattern: [
+            const QuiltedGridTile(2, 2),
+            const QuiltedGridTile(1, 1),
+            const QuiltedGridTile(1, 1),
+            const QuiltedGridTile(1, 1),
+            const QuiltedGridTile(1, 1),
+          ],
+        ),
+      )
+    ]);
+  }
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const title = 'Floating App Bar';
+
+    return MaterialApp(
+      title: title,
+      home: Scaffold(
+        // No appbar provided to the Scaffold, only a body with a
+        // CustomScrollView.
+        body: CustomScrollView(
+          slivers: [
+            // Add the app bar to the CustomScrollView.
+            const SliverAppBar(
+              // Provide a standard title.
+              title: Text(title),
+              // Allows the user to reveal the app bar if they begin scrolling
+              // back up the list of items.
+              floating: true,
+              // Display a placeholder widget to visualize the shrinking size.
+              flexibleSpace: Placeholder(),
+              // Make the initial height of the SliverAppBar larger than normal.
+              expandedHeight: 200,
+            ),
+            // Next, create a SliverList
+            SliverList(
+              // Use a delegate to build items as they're scrolled on screen.
+              delegate: SliverChildBuilderDelegate(
+                // The builder function returns a ListTile with a title that
+                // displays the index of the current item.
+                (context, index) => ListTile(title: Text('Item #$index')),
+                // Builds 1000 ListTiles
+                childCount: 1000,
               ),
-          childCount: recipes.length),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
+
+// IconButton(
+//           icon: isDark == true
+//               ? const Icon(Icons.sunny)
+//               : const Icon(Icons.mode_night_outlined),
+//           onPressed: () {
+//             setState(() {
+//               // Here we changing the icon.
+//               isDark = !isDark;
+//               if (isDark == false) {
+//                 MyApp.of(context)?.changeTheme(ThemeMode.light);
+//               } else {
+//                 MyApp.of(context)?.changeTheme(ThemeMode.dark);
+//               }
+//             });
+//           }),
