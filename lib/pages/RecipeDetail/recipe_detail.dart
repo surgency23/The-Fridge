@@ -32,7 +32,7 @@ class RecipeDetail extends StatelessWidget {
                 left: 10,
                 right: 10,
                 bottom: 10,
-                child: (Container(
+                child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: .15),
                         borderRadius: BorderRadius.circular(15.0),
@@ -58,7 +58,7 @@ class RecipeDetail extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: InstructionsView(recipe.instructions)),
                       ],
-                    )))))
+                    ))))
           ],
         ));
   }

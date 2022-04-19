@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_fridge/pages/SignupLoginSplashScreen/login_splash_screen.dart';
 import 'pages/Home/home_page.dart';
 
 void main() {
