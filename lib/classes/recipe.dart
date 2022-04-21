@@ -39,7 +39,7 @@ class Recipe {
     String instructions;
     List<String> ingredients;
     String title;
-    String id = json["id"];
+    String id = json["_id"];
     try {
       tags = List<String>.from(json["tags"]);
     } catch (e) {
@@ -91,7 +91,7 @@ class Recipe {
       rethrow;
     }
     try {
-      id = json["id"];
+      id = json["_id"];
     } catch (e) {
       print("id");
       rethrow;
@@ -120,7 +120,7 @@ class Recipe {
     data["instructions"] = instructions;
     data["ingredients"] = ingredients;
     data["title"] = title;
-    data["id"] = id;
+    data["_id"] = id;
     if (parsedIngredients != null) {
       data["parsedIngredients"] =
           parsedIngredients!.map((e) => e.toJson()).toList();

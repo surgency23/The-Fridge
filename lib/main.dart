@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_fridge/pages/SignupLoginSplashScreen/login_splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'controllers/theme_controller/theme_controller.dart';
 import 'pages/Home/home_page.dart';
 
 void main() {
@@ -25,21 +26,18 @@ class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
-      themeMode: _themeMode,
-      home: const HomePage(),
-    );
-  }
-
-  /// 3) Call this to change theme from any context using "of" accessor
-  /// e.g.:
-  /// MyApp.of(context).changeTheme(ThemeMode.dark);
-  void changeTheme(ThemeMode themeMode) {
-    setState(() {
-      _themeMode = themeMode;
-    });
+    return ChangeNotifierProvider(
+        create: (_) => ThemeController(),
+        child: Consumer<ThemeController>(
+          builder: ((context, ThemeController themeNotifier, child) {
+            return MaterialApp(
+              title: "The Fridge",
+              theme:
+                  themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+              debugShowCheckedModeBanner: false,
+              home: const HomePage(),
+            );
+          }),
+        ));
   }
 }
