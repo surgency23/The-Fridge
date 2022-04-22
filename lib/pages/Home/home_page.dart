@@ -1,9 +1,6 @@
-//dart packages
-import 'dart:async';
 //prebuilt packages
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 //flutter packages
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:the_fridge/pages/Home/components/recipe_gridview.dart';
 //project code packages
