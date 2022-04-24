@@ -15,16 +15,16 @@ class RecipeController with ChangeNotifier {
     notifyListeners();
   }
 
-  isLoadingNotifier() {
-    notifyListeners();
-  }
-
-  isNotLoadingNotifier() {
-    notifyListeners();
-  }
-
   Future<void> addRecipes(String lastId) async {
     var response = await fetchRecipes(lastId);
+    for (Recipe recipe in response) {
+      recipes.add(recipe);
+    }
+  }
+
+  Future<void> reloadRecipes() async {
+    var response = await fetchRecipes("");
+    recipes.clear();
     for (Recipe recipe in response) {
       recipes.add(recipe);
     }

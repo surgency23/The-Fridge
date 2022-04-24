@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:the_fridge/classes/recipe.dart';
 import 'package:the_fridge/controllers/theme_controller/theme_controller.dart';
 import 'package:the_fridge/controllers/recipe_controller/recipe_controller.dart';
-import 'package:the_fridge/pages/Home/components/recipe_loading.dart';
 import 'recipe_found.dart';
 
 class RecipeGridView extends StatefulWidget {
@@ -17,16 +16,15 @@ class RecipeGridView extends StatefulWidget {
 class _RecipeGridViewState extends State<RecipeGridView> {
   ScrollController scrollController = ScrollController();
   final RecipeController recipeController = RecipeController();
-  bool scrollingDown = false;
-  double scrollingOpacity = 1.0;
+  double scrollOpacity = 1.0;
   int duration = 0;
-  bool isVisible = true;
+  bool isVisible = false;
 
   @override
   void initState() {
     super.initState();
     scrollController.addListener(onScrollUpdated);
-    scrollController.addListener(scrolling);
+    scrollController.addListener(floatingActionButtonOpacity);
     recipeController.loadRecipes();
   }
 
@@ -36,27 +34,35 @@ class _RecipeGridViewState extends State<RecipeGridView> {
     super.dispose();
   }
 
-  Future<void> scrolling() async {
+  Future<void> floatingActionButtonOpacity() async {
     if (scrollController.position.userScrollDirection ==
         ScrollDirection.reverse) {
       setState(() {
         duration = 500;
-        scrollingOpacity = 0;
+        scrollOpacity = 0;
       });
     } else {
       setState(() {
         duration = 0;
-        scrollingOpacity = 1;
+        scrollOpacity = 1;
         isVisible = true;
+      });
+    }
+    if (scrollController.position.atEdge &&
+        scrollController.position.pixels == 0) {
+      setState(() {
+        duration = 500;
+        scrollOpacity = 0;
       });
     }
   }
 
   Future<void> onScrollUpdated() async {
-    var maxScroll = scrollController.position.maxScrollExtent;
+    var maxScroll = (scrollController.position.maxScrollExtent) * .80;
     var currentPosition = scrollController.position.pixels;
-    if (currentPosition == maxScroll) {
-      recipeController.loadRecipes();
+    if (currentPosition >= maxScroll && recipeController.isLoading == false) {
+      print("loading");
+      await recipeController.loadRecipes();
     }
   }
 
@@ -70,35 +76,35 @@ class _RecipeGridViewState extends State<RecipeGridView> {
         child: Scaffold(
       body: RefreshIndicator(
           onRefresh: () async {
-            //location to grab initial load of recipes
+            await recipeController.reloadRecipes();
           },
           child: CustomScrollView(
             physics: const ScrollPhysics(),
             controller: scrollController,
             slivers: [
-              appSliver(),
+              appBarSliver(),
               ChangeNotifierProvider.value(
                   value: recipeController,
                   child: Consumer<RecipeController>(
                     builder: (_, ctl, __) {
-                      if (recipeController.isLoading) {
-                        print("loading");
-                        return recipesLoadingShimmer(recipeController.recipes);
-                      } else {
-                        print("done loading");
-                        return recipeSliver(recipeController.recipes);
-                      }
+                      return recipeSliver(recipeController.recipes);
                     },
                   )),
-
-              //recipeSliver(),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return const LinearProgressIndicator();
+                  },
+                  childCount: 1,
+                ),
+              )
             ],
           )),
       floatingActionButton: AnimatedOpacity(
-          opacity: scrollingOpacity,
+          opacity: scrollOpacity,
           duration: Duration(milliseconds: duration),
           onEnd: () {
-            if (scrollingOpacity == 0) {
+            if (scrollOpacity == 0) {
               isVisible = false;
             }
           },
@@ -113,13 +119,13 @@ class _RecipeGridViewState extends State<RecipeGridView> {
     ));
   }
 
-  Widget appSliver() {
+  Widget appBarSliver() {
     return SliverAppBar(
       // Provide a standard title.
       snap: true,
       title: const Text("The Fridge"),
       centerTitle: false,
-      // Allows the user to reveal the app bar if they begin scrolling
+      // Allows the user to reveal the app bar if they begin floatingActionButtonOpacity
       // back up the list of items.
       floating: true,
       forceElevated: true,
@@ -147,7 +153,7 @@ class _RecipeGridViewState extends State<RecipeGridView> {
         crossAxisCount: 2,
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        repeatPattern: QuiltedGridRepeatPattern.inverted,
+        //repeatPattern: QuiltedGridRepeatPattern.inverted,
         pattern: [
           const QuiltedGridTile(2, 2),
           const QuiltedGridTile(1, 1),
@@ -155,41 +161,9 @@ class _RecipeGridViewState extends State<RecipeGridView> {
         ],
       ),
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return RecipeFound(recipes[index]);
-        },
+        (context, index) =>
+            RecipeFound(recipes[index], index, recipes[index].image.size1280W),
         childCount: recipeController.recipes.length,
-      ),
-    );
-  }
-
-  SliverGrid recipesLoadingShimmer(List<Recipe> recipes) {
-    return SliverGrid(
-      gridDelegate: SliverQuiltedGridDelegate(
-        crossAxisCount: 2,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
-        repeatPattern: QuiltedGridRepeatPattern.inverted,
-        pattern: [
-          const QuiltedGridTile(2, 2),
-          const QuiltedGridTile(1, 1),
-          const QuiltedGridTile(1, 1),
-        ],
-      ),
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return RecipeLoading();
-        },
-        childCount: recipes.length + 30,
-      ),
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Center(
-        child: CircularProgressIndicator(),
       ),
     );
   }
