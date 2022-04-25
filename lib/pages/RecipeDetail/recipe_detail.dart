@@ -18,23 +18,48 @@ class RecipeDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(recipe.title)),
-        body: Column(children: [
-          Hero(
-              tag: tag,
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: image,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Transform.scale(
-                  scale: 0.25,
-                  child: CircularProgressIndicator(
-                      value: downloadProgress.progress),
-                ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              )
-              // CachedNetworkImage(fit: BoxFit.cover, imageUrl: image),
-              ),
-          Stack()
+        body: CustomScrollView(slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Hero(
+                  tag: tag,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Transform.scale(
+                      scale: 0.25,
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  )),
+              Container(
+                  child: SingleChildScrollView(
+                      child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: const RatingsView()),
+                  recipe.servings != null
+                      ? Container(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: Text(recipe.servings!))
+                      : Container(),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      child: IngredientsView(
+                        ingredients: recipe.ingredients,
+                      )),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      child: InstructionsView(recipe.instructions)),
+                ],
+              )))
+            ]),
+          )
         ]));
   }
   //       Stack(
@@ -82,7 +107,10 @@ class RecipeDetail extends StatelessWidget {
   //                           alignment: Alignment.centerLeft,
   //                           child: InstructionsView(recipe.instructions)),
   //                     ],
-  //                   ))))
+  //                   )
+  // )
+  // )
+  // )
   //         ],
   //       ));
   // }
