@@ -8,7 +8,9 @@ import 'package:the_fridge/controllers/recipe_controller/recipe_controller.dart'
 import 'recipe_found.dart';
 
 class RecipeGridView extends StatefulWidget {
-  const RecipeGridView({Key? key}) : super(key: key);
+  const RecipeGridView({
+    Key? key,
+  }) : super(key: key);
   @override
   _RecipeGridViewState createState() => _RecipeGridViewState();
 }

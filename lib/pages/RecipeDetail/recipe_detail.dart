@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:the_fridge/widgets/ingredients_view.dart';
-import 'package:the_fridge/widgets/ratings_view.dart';
-
+import './components/ingredients_view.dart';
+import './components/ratings_view.dart';
+import './components/instructions_view.dart';
 import '../../classes/recipe.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/instructions_view.dart';
 
 class RecipeDetail extends StatelessWidget {
   const RecipeDetail(

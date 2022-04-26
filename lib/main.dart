@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the_fridge/widgets/custom_bottom_nav_bar.dart';
 import 'controllers/theme_controller/theme_controller.dart';
-import 'pages/Home/home_page.dart';
+import 'controllers/user_controller/user_controller.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => User())],
+      child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -22,8 +25,6 @@ class MyApp extends StatefulWidget {
 /// State object hidden ↓. Focusing on ↑ StatefulWidget here.
 
 class _MyAppState extends State<MyApp> {
-  /// 1) our themeMode "state" field
-  ThemeMode _themeMode = ThemeMode.system;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -31,12 +32,11 @@ class _MyAppState extends State<MyApp> {
         child: Consumer<ThemeController>(
           builder: ((context, ThemeController themeNotifier, child) {
             return MaterialApp(
-              title: "The Fridge",
-              theme:
-                  themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-              debugShowCheckedModeBanner: false,
-              home: const HomePage(),
-            );
+                title: "The Fridge",
+                theme:
+                    themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+                debugShowCheckedModeBanner: false,
+                home: const PreservingBottomNavState());
           }),
         ));
   }
