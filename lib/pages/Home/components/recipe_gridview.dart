@@ -153,8 +153,8 @@ class _RecipeGridViewState extends State<RecipeGridView> {
     return SliverGrid(
       gridDelegate: SliverQuiltedGridDelegate(
         crossAxisCount: 2,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
+        mainAxisSpacing: 3,
+        crossAxisSpacing: 3,
         //repeatPattern: QuiltedGridRepeatPattern.inverted,
         pattern: [
           const QuiltedGridTile(2, 2),
@@ -163,8 +163,12 @@ class _RecipeGridViewState extends State<RecipeGridView> {
         ],
       ),
       delegate: SliverChildBuilderDelegate(
-        (context, index) =>
-            RecipeFound(recipes[index], index, recipes[index].image.size1280W),
+        (context, index) => Padding(
+            padding: EdgeInsets.all(2),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: RecipeFound(
+                    recipes[index], index, recipes[index].image.size1280W))),
         childCount: recipeController.recipes.length,
       ),
     );
