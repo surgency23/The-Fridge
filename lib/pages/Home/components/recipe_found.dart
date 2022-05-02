@@ -27,55 +27,21 @@ class RecipeFound extends StatelessWidget {
         child: ClipRect(
           child: Hero(
               tag: tag,
-              child: CachedNetworkImage(
-                imageUrl: image,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    Transform.scale(
-                  scale: 0.25,
-                  child: CircularProgressIndicator(
-                      value: downloadProgress.progress),
-                ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              )),
+              child: GridTile(
+                  footer: GridTileBar(
+                    title: Center(child: Text(recipe.title)),
+                    backgroundColor: Colors.black.withOpacity(0.5),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Transform.scale(
+                      scale: 0.25,
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ))),
         ));
   }
-  //   return GridTile(
-  //       footer: GridTileBar(
-  //         title: Center(child: Text(recipe.title)),
-  //         backgroundColor: Colors.black.withOpacity(0.5),
-  //       ),
-  //       child: GestureDetector(
-  //           onTap: () async {
-  //             Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                     builder: (context) => RecipeDetail(recipe: recipe)));
-  //           },
-  //           child: CachedNetworkImage(
-  //             imageUrl: recipe.image.size640W,
-  //             progressIndicatorBuilder: (context, url, downloadProgress) =>
-  //                 Transform.scale(
-  //               scale: 0.25,
-  //               child:
-  //                   CircularProgressIndicator(value: downloadProgress.progress),
-  //             ),
-  //             errorWidget: (context, url, error) => Icon(Icons.error),
-  //           )
-
-  //           // DecorationImage(
-  //           //     fit: BoxFit.cover,
-  //           //     image: CachedNetworkImageProvider(recipe.image.size640W)
-  //           // CachedNetworkImage(
-  //           //   imageUrl: recipe.image.size640W,
-  //           //   progressIndicatorBuilder:
-  //           //       (context, url, downloadProgress) =>
-  //           //           CircularProgressIndicator(
-  //           //               value: downloadProgress.progress),
-  //           //   errorWidget: (context, url, error) => Icon(Icons.error),
-  //           // )
-  //           // NetworkImage(
-  //           //   recipe.image.size640W,
-  //           // )
-  //           ));
-  // }
 }
