@@ -38,10 +38,9 @@ class AuthService {
 
   getinfo(token) async {
     try {
-      dio.options.headers['Authorization'] = 'Bearer $token';
-      return await dio.get('https://secure-beyond-98643.herokuapp.com/getinfo');
+      return await dio.get('https://secure-beyond-98643.herokuapp.com/getinfo',
+          options: Options(headers: {"Authorization": token}));
     } on DioError catch (e) {
-      print(e);
       Fluttertoast.showToast(
         msg: e.response?.data['msg'],
         toastLength: Toast.LENGTH_SHORT,
