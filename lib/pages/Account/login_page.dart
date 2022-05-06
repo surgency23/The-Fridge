@@ -29,15 +29,13 @@ class LoginPage extends StatelessWidget {
           value: userController,
           child: Consumer<UserController>(
             builder: (_, controller, __) {
-              print("is logged in, ${controller.token}");
+              print("is logged in, ${controller.loggedIn}");
               return ElevatedButton(
                   child: Text("Login"),
                   onPressed: () async {
-                    if (controller.loading == false) {
+                    if (!controller.loading && !controller.loggedIn) {
                       await controller.signIn(
                           textEmailController.text, textPwdController.text);
-                    } else {
-                      null;
                     }
                   });
             },
