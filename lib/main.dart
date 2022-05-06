@@ -6,7 +6,7 @@ import 'controllers/user_controller/user_controller.dart';
 
 void main() {
   runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => User())],
+      providers: [ChangeNotifierProvider(create: (_) => UserController())],
       child: const MyApp()));
 }
 

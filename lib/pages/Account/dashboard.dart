@@ -7,7 +7,7 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<User>(builder: (context, user, _) {
+    return Consumer<UserController>(builder: (context, user, _) {
       return Scaffold(
           appBar: AppBar(title: Text("DashBoard")),
           body: Center(child: Text(user.email)));

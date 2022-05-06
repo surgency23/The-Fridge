@@ -1,6 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:the_fridge/pages/Account/account_page.dart';
+import 'package:the_fridge/pages/Account/login_page.dart';
 import 'package:the_fridge/pages/Home/home_page.dart';
 
 class PreservingBottomNavState extends StatefulWidget {
